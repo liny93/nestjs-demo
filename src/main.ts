@@ -1,9 +1,12 @@
+require('./global/env')
+
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { urlencoded, json } from 'express'
 import { register } from '@global/register'
 import * as cookieParser from 'cookie-parser';
+import { WsAdapter } from '@nestjs/platform-ws';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { logger: new Logger() });
@@ -14,8 +17,12 @@ async function bootstrap() {
   app.enableCors();             // 跨域
   app.use(cookieParser());      // cookie
 
+  app.useWebSocketAdapter(new WsAdapter(app));
+
   register(app)
 
-  await app.listen(3000);
+  const POST = process.env.APP_PORT
+  app.listen(POST).then(() => console.log(new Date().toLocaleString() + " -- application start success; listen on port: " + POST));
 }
+
 bootstrap();

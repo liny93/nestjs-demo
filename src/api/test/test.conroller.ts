@@ -15,17 +15,17 @@ export class TestController {
 
     @Post()
     private testPost() {
-        return this.testService.test()
+        return "test post"
     }
 
     @Put()
     private testPut() {
-        return this.testService.test()
+        return "test put"
     }
 
     @Delete()
     private testDelete() {
-        return this.testService.test()
+        return "test delete"
     }
 
     @Get('exception')

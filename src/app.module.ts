@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import ApiModule from './api/api.module';
 import { ConfigModule } from '@nestjs/config'
 import config from '@config/index'
+import { WebsocketModule } from './websocket/websocket.module';
 
 @Module({
   imports: [
@@ -9,6 +10,7 @@ import config from '@config/index'
       isGlobal: true,
       load: [config]
     }),
+    WebsocketModule,
     ApiModule
   ],
   controllers: [],
