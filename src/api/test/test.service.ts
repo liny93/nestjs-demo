@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { HttpException, Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { RedisClientService } from "@src/global/redis";
 
@@ -20,10 +20,8 @@ export class TestService {
     }
 
     public async redisTest() {
-        const res = await this.redisService.exists('hello')
-        console.log(res);
 
-        return res
+        throw new HttpException('test exec', 400)
     }
 
 }

@@ -12,9 +12,8 @@ import { RedisModule } from './global/redis';
       load: [config]
     }),
     WebsocketModule,
-    ApiModule,
     RedisModule,
-
+    ApiModule,
   ],
   controllers: [],
   providers: [],
