@@ -1,15 +1,14 @@
 require('./global/env')
 
-import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { urlencoded, json } from 'express'
-import { register } from '@global/register'
+import { register } from '@src/common/register'
 import * as cookieParser from 'cookie-parser';
 import { WsAdapter } from '@nestjs/platform-ws';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { logger: new Logger() });
+  const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api')    // 全局路由前缀
   app.use(json({ limit: '50mb' }));

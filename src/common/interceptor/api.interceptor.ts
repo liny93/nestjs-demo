@@ -12,7 +12,7 @@ export class ApiInterceptor implements NestInterceptor {
         return next.handle().pipe(map(data => {
             return {
                 code: 200,
-                data: data || "",
+                data: data ?? "",
                 message: "success"
             }
         }))

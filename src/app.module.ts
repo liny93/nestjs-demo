@@ -3,6 +3,7 @@ import ApiModule from './api/api.module';
 import { ConfigModule } from '@nestjs/config'
 import config from '@config/index'
 import { WebsocketModule } from './websocket/websocket.module';
+import { RedisModule } from './global/redis';
 
 @Module({
   imports: [
@@ -11,7 +12,9 @@ import { WebsocketModule } from './websocket/websocket.module';
       load: [config]
     }),
     WebsocketModule,
-    ApiModule
+    ApiModule,
+    RedisModule,
+
   ],
   controllers: [],
   providers: [],

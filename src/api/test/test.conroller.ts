@@ -37,4 +37,9 @@ export class TestController {
     private config() {
         return this.testService.config()
     }
+
+    @Get('redis')
+    private async redisTest() {
+        return await this.testService.redisTest()
+    }
 }
