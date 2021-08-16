@@ -6,6 +6,7 @@ import { urlencoded, json } from 'express'
 import { register } from '@src/common/register'
 import * as cookieParser from 'cookie-parser';
 import { WsAdapter } from '@nestjs/platform-ws';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

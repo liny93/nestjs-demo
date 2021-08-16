@@ -1,8 +1,10 @@
-import { Controller, Delete, Get, HttpException, Post, Put, Query } from "@nestjs/common";
+import { Controller, Delete, Get, HttpException, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@src/common/guard/auth.guard";
 import { query } from "express";
 import { TestService } from "./test.service";
 
 @Controller('test')
+
 export class TestController {
     constructor(
         private readonly testService: TestService
@@ -39,6 +41,7 @@ export class TestController {
     }
 
     @Get('redis')
+    @UseGuards(new AuthGuard())
     private async redisTest() {
         return await this.testService.redisTest()
     }
