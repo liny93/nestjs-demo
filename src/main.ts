@@ -1,12 +1,8 @@
-require('./common/env')
-
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { urlencoded, json } from 'express'
-import { register } from '@src/common/register'
-import * as cookieParser from 'cookie-parser';
-import { WsAdapter } from '@nestjs/platform-ws';
-import { join } from 'path';
+import { ConfigService } from "@nestjs/config";
+import { register } from '@src/server/register';
+import { json, urlencoded } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,14 +11,16 @@ async function bootstrap() {
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
   app.enableCors();             // 跨域
-  app.use(cookieParser());      // cookie
 
-  app.useWebSocketAdapter(new WsAdapter(app));
+  const configService = app.get(ConfigService);
 
-  register(app)
+  const port = configService.get<number>('APP_PORT');
 
-  const POST = process.env.APP_PORT
-  app.listen(POST).then(() => console.log(new Date().toLocaleString() + " -- application start success; listen on port: " + POST));
+  register(app)   // 注册中间件
+
+  app.listen(port).then(() =>
+    console.log(new Date().toLocaleString() + " ------ application start success; listen on port: " + port)
+  );;
 }
 
 bootstrap();

@@ -1,26 +1,34 @@
 import { Module } from '@nestjs/common';
-import ApiModule from './api/api.module';
-import { ConfigModule } from '@nestjs/config'
-import config from '@config/index'
-import { WebsocketModule } from './websocket/websocket.module';
-import { RedisModule } from './global/redis';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
-
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { CustomRedisModule } from './common/redis/redis.module';
+import { NoteModule } from './note/note.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [config]
+    ConfigModule.forRoot(),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      connectionName: 'note',
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>("MONGODB_URL_NOTE"),
+        maxPoolSize: 100,
+        minPoolSize: 5,
+      }),
+      inject: [ConfigService],
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
-      serveRoot: '/views'
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      connectionName: 'work',
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>("MONGODB_URL_WORK"),
+        maxPoolSize: 100,
+        minPoolSize: 5,
+      }),
+      inject: [ConfigService],
     }),
-    WebsocketModule,
-    RedisModule,
-    ApiModule,
+    NoteModule,
+    CustomRedisModule
   ],
   controllers: [],
   providers: [],
