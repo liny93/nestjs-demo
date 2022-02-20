@@ -21,9 +21,7 @@ import { CutsomRedisService } from "./redis.service";
                             client.on('close', err => {
                                 console.log('redis close')
                             })
-                            client.on('connect', err => {
-                                console.log('redis connect')
-                            })
+                            client.on('connect', err => { })
                         },
                         name: "cache",
                     }

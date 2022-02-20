@@ -7,9 +7,7 @@ export class CutsomRedisService implements OnModuleInit, OnModuleDestroy {
     public client: IORedis.Redis;
     private readonly logger: Logger = new Logger(CutsomRedisService.name)
 
-    constructor(private redisService: RedisService) {
-        console.log('redis construtor')
-    }
+    constructor(private redisService: RedisService) { }
 
     async onModuleInit() {
         await this.getClient();
