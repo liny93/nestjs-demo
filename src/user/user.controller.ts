@@ -2,16 +2,21 @@ import { Body, Controller, Post } from "@nestjs/common";
 import { ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UserLoginResponseDto } from "./dto/user-login-response.dto";
+import { UserService } from "./user.service";
 
 @Controller('user')
 @ApiTags('user')
 export class UserController {
 
+    constructor(
+        private readonly userService: UserService
+    ) { }
+
     @Post('register')
     @ApiOperation({ description: "普通注册" })
     @ApiOkResponse({ type: UserLoginResponseDto })
     register(@Body() createUserDto: CreateUserDto): Promise<UserLoginResponseDto> {
-        return null
+        return this.userService.create(createUserDto)
     }
 
     @Post('register/email')
