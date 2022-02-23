@@ -5,10 +5,10 @@ export class CreateUserDto {
 
     @ApiProperty()
     @IsString()
-    readonly username: string;
+    username: string;
 
     @ApiProperty()
     @IsString()
     @MinLength(6)
-    readonly password: string;
+    password: string;
 }

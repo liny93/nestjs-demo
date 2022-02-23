@@ -15,10 +15,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const status = exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR;
 
 
+
         const errorResponse = {
             code: status,
             message: message
         };
+        console.log(errorResponse);
         if (status !== 404) {
             this.logger.error(`Request original url: ${request.originalUrl}, error message: ${message}`)
         }

@@ -1,7 +1,7 @@
 const fs = require("fs")
 const path = require("path")
 
-const name = 'mock'
+const name = 'indicator'
 const formalName = name.slice(0, 1).toUpperCase() + name.slice(1)
 
 const apiPath = path.resolve(__dirname, '../src/api')

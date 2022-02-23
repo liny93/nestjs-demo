@@ -1,5 +1,8 @@
 import { HttpStatus } from "@nestjs/common";
 
+/**
+ * 自定义Exception
+ */
 export class AppException extends Error {
     public code: number;
     public httpStatus: HttpStatus

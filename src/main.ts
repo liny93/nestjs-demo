@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from "@nestjs/config";
-import { register } from '@src/server/register';
+import { register } from '@src/middleware/register';
 import { json, urlencoded } from 'express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
@@ -15,8 +15,6 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  const port = configService.get<number>('APP_PORT');
-
   register(app)   // 注册中间件
 
   const config = new DocumentBuilder()
@@ -27,6 +25,8 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
+
+  const port = configService.get<number>('APP_PORT');
 
   app.listen(port).then(() =>
     console.log(new Date().toLocaleString() + " ------ application start success; listen on port: " + port)
