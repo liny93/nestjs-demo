@@ -15,7 +15,7 @@ export class UnknownExceptionFilter implements ExceptionFilter {
             message: 'server error'
         };
 
-        this.logger.error(`Unknown Server Error: ${exception.message}`, exception.stack)
+        this.logger.error(`Unknown Server Error: ${exception.message}`)
         // 设置返回的状态码、请求头、发送错误信息
         response.status(status);
         response.header('Content-Type', 'application/json; charset=utf-8');

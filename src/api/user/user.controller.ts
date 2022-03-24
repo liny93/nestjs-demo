@@ -1,11 +1,15 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 import { ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { RolesGuard } from "@src/middleware/guards/roles.guard";
+import { Roles } from "../test/test";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { LoginDto } from "./dto/login.dto";
 import { UserLoginResponseDto } from "./dto/user-login-response.dto";
 import { UserService } from "./user.service";
 
 @Controller('user')
 @ApiTags('user')
+@UseGuards(RolesGuard)
 export class UserController {
 
     constructor(
@@ -34,8 +38,15 @@ export class UserController {
     }
 
     @Post('login')
-    login() {
-
+    @ApiOperation({ description: "登录" })
+    @ApiOkResponse({ type: UserLoginResponseDto })
+    login(@Body() loginDto: LoginDto): Promise<UserLoginResponseDto> {
+        return this.userService.login(loginDto)
     }
 
+    @Get('roles')
+    @Roles('admin')
+    getUserRolse() {
+
+    }
 }

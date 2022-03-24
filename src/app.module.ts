@@ -6,7 +6,9 @@ import { UserModule } from './api/user/user.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       connectionName: 'user',
@@ -14,7 +16,7 @@ import { UserModule } from './api/user/user.module';
         uri: configService.get<string>("MONGODB_URL_USER"),
         maxPoolSize: 100,
         minPoolSize: 5,
-        useNewUrlParser: true
+        useCreateIndex: true
       }),
       inject: [ConfigService],
     }),

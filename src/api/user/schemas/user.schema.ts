@@ -11,11 +11,16 @@ export type UserDocument = User & Document;
     },
 })
 export class User {
+    _id: string
+
     @Prop({ unique: true })
     username: string
 
     @Prop({ required: true })
     password: string
+
+    @Prop({ required: true })
+    roles: string[]
 }
 
 const schema = SchemaFactory.createForClass(User);
