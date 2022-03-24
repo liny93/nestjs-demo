@@ -9,19 +9,16 @@ import { plainToClass } from 'class-transformer';
 export class ValidationPipe implements PipeTransform<any> {
     async transform(value: any, metadata: ArgumentMetadata) {
         const { metatype } = metadata;
-        console.log(metatype);
         if (!metatype || !this.toValidate(metatype)) {
             return value;
         }
 
         const object = plainToClass(metatype, value);
         const errors = await validate(object);
-        console.log(object, errors);
 
         if (!errors || errors.length <= 0) {
             return object;
         }
-
 
         const message = this.getMessage(errors)
 
