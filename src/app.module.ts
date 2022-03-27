@@ -3,11 +3,23 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CustomRedisModule } from './common/redis/redis.module';
 import { UserModule } from './api/user/user.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { LoginRecord } from './api/user/entities/login.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true
+    }),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'lymysql',
+      database: 'test',
+      entities: [LoginRecord],
+      synchronize: true,
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -21,7 +33,7 @@ import { UserModule } from './api/user/user.module';
       inject: [ConfigService],
     }),
     UserModule,
-    CustomRedisModule
+    // CustomRedisModule
   ],
   controllers: [],
   providers: [],

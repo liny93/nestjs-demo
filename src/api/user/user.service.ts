@@ -8,18 +8,22 @@ import { createHash } from 'crypto';
 import { LoginDto } from "./dto/login.dto";
 import { sign } from 'jsonwebtoken';
 import { ConfigService } from "@nestjs/config";
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { LoginRecord } from './entities/login.entity'
 
 @Injectable()
 export class UserService {
 
     constructor(
         @InjectModel(User.name) private userModel: Model<UserDocument>,
+        @InjectRepository(LoginRecord) private loginRepository: Repository<LoginRecord>,
         private readonly configService: ConfigService
     ) { }
 
     async create(createUserDto: CreateUserDto) {
         const user = new User()
+
         user.username = createUserDto.username
         if (user.username.includes('liny')) {
             user.roles = ['admin']
@@ -33,7 +37,8 @@ export class UserService {
          * 还是原生好用
          */
         const hash = createHash('sha256');
-        user.password = hash.update(createUserDto.password).digest('hex');
+        const password = hash.update(createUserDto.password).digest('hex');
+        user.password = password
 
         const createResult = await this.userModel.create(user).catch(err => {
             throw new HttpException('create user fail', 400)
@@ -60,6 +65,14 @@ export class UserService {
 
         const response = new UserLoginResponseDto()
         response.token = token
+
+        const loginRecord = new LoginRecord()
+        loginRecord.name = userInfo.username
+        loginRecord.token = token
+        loginRecord.time = new Date()
+        console.log(loginRecord);
+
+        await this.loginRepository.save(loginRecord)
 
         return response
     }
