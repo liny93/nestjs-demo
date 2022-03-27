@@ -74,6 +74,9 @@ export class UserService {
 
         await this.loginRepository.save(loginRecord)
 
+        const record = await this.loginRepository.query(`SELECT * FROM login_record WHERE name = ? LIMIT 10`, [userInfo.username])
+        response.record = record
+
         return response
     }
 
@@ -85,4 +88,6 @@ export class UserService {
 
         return sign(payload, this.configService.get<string>('JWT_PRIVATE_KEY'), { expiresIn: '30m' });
     }
+
+
 }

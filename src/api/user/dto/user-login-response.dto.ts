@@ -5,6 +5,9 @@ export class UserLoginResponseDto {
     @ApiProperty()
     token: string;
 
+    @ApiProperty()
+    record: string[];
+
     constructor(token?: string) {
         this.token = token
     }
