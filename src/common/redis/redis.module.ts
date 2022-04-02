@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { RedisModule } from 'nestjs-redis';
-import { CutsomRedisService } from "./redis.service";
+import { RedisModule as NestRedisModule } from 'nestjs-redis';
+import { RedisService } from "./redis.service";
 
 @Module({
     imports: [
-        RedisModule.forRootAsync({
+        NestRedisModule.forRootAsync({
             imports: [ConfigModule],
             useFactory: (configService: ConfigService) => {
                 return [
@@ -14,15 +14,6 @@ import { CutsomRedisService } from "./redis.service";
                         password: configService.get<string>('REDIS_PASSWORD') || '',
                         port: parseInt(configService.get<string>('REDIS_PORT')),
                         db: parseInt(configService.get<string>('REDIS_DATABASE')),
-                        onClientReady: (client) => {
-                            client.on('error', err => {
-                                console.log('redis error')
-                            })
-                            client.on('close', err => {
-                                console.log('redis close')
-                            })
-                            client.on('connect', err => { })
-                        },
                         name: "cache",
                     }
                 ]
@@ -30,7 +21,7 @@ import { CutsomRedisService } from "./redis.service";
             inject: [ConfigService]
         }),
     ],
-    providers: [CutsomRedisService],
-    exports: [CutsomRedisService]
+    providers: [RedisService],
+    exports: [RedisService]
 })
-export class CustomRedisModule { }
+export class RedisModule { }

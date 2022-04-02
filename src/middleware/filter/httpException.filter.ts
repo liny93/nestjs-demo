@@ -14,15 +14,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const message = exception.message;
         const status = exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR;
 
-
-
         const errorResponse = {
             code: status,
             message: message
         };
-        console.log(errorResponse);
+
         if (status !== 404) {
-            this.logger.error(`Request original url: ${request.originalUrl}, error message: ${message}`)
+            this.logger.error(`Request original url: ${request.originalUrl}, error message: ${message}, request: ${JSON.stringify(request.body)}`)
         }
         // 设置返回的状态码、请求头、发送错误信息
         response.status(status);

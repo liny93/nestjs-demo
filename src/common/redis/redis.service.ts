@@ -1,13 +1,13 @@
 import { Global, Injectable, Logger, Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import * as IORedis from 'ioredis';
-import { RedisService } from 'nestjs-redis';
+import { RedisService as NestRedisService } from 'nestjs-redis';
 
 @Injectable()
-export class CutsomRedisService implements OnModuleInit, OnModuleDestroy {
+export class RedisService implements OnModuleInit, OnModuleDestroy {
     public client: IORedis.Redis;
-    private readonly logger: Logger = new Logger(CutsomRedisService.name)
+    private readonly logger: Logger = new Logger(RedisService.name)
 
-    constructor(private redisService: RedisService) { }
+    constructor(private redisService: NestRedisService) { }
 
     async onModuleInit() {
         await this.getClient();

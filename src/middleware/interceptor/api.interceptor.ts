@@ -22,10 +22,10 @@ export class ApiInterceptor implements NestInterceptor {
             request.headers['x-request-id'] = nanoid()
         }
 
-        this.logger.log(this.getRequestLog(request))
+        // this.logger.log(this.getRequestLog(request))
 
         return next.handle().pipe(map(data => {
-            this.logger.log(`requestId: ${request.headers['x-request-id']}, result: ${JSON.stringify(data)}`)
+            // this.logger.log(`requestId: ${request.headers['x-request-id']}, result: ${JSON.stringify(data)}`)
             return {
                 code: 200,
                 data: data ?? "",

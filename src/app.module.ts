@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CustomRedisModule } from './common/redis/redis.module';
+import { RedisModule } from './common/redis/redis.module';
 import { UserModule } from './api/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoginRecord } from './api/user/entities/login.entity';
+import TaskModule from './api/task/task.module';
 
 @Module({
   imports: [
@@ -33,7 +34,8 @@ import { LoginRecord } from './api/user/entities/login.entity';
       inject: [ConfigService],
     }),
     UserModule,
-    // CustomRedisModule
+    RedisModule,
+    TaskModule
   ],
   controllers: [],
   providers: [],
